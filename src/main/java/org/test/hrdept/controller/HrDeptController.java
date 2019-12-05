@@ -1,27 +1,36 @@
 package org.test.hrdept.controller;
 
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import org.test.hrdept.dao.DepartmentDao;
+import org.test.hrdept.dao.ProfessionDao;
 import org.test.hrdept.domain.Department;
 import org.test.hrdept.domain.Employee;
+import org.test.hrdept.domain.Profession;
 
 import javax.annotation.Resource;
 import java.util.List;
 
 @Controller
+@RestController
 @RequestMapping(value = "/")
 public class HrDeptController {
 
     private DepartmentDao departmentDao;
+    private ProfessionDao professionDao;
 
     @Resource(name = "departmentDao")
     public void setUserDao(DepartmentDao departmentDao) {
         this.departmentDao = departmentDao;
+    }
+
+    @Resource(name = "professionDao")
+    public void setProfessionDao(ProfessionDao professionDao) {
+        this.professionDao = professionDao;
     }
 
     @RequestMapping(value = {"/deps"}, method = RequestMethod.GET)
@@ -33,11 +42,9 @@ public class HrDeptController {
         department.setDepartment(department2);
         departmentDao.insertDepartment(department);
 
-        departmentDao.
 
         List<Department> deptList = departmentDao.selectAllDepartments();
         modelView.addObject("deptList", deptList);
-
 
 
         return modelView;
@@ -50,4 +57,35 @@ public class HrDeptController {
 //        modelView.addObject("empList", empList);
 //        return modelView;
 //    }
+
+    //REST
+    @RequestMapping(value = "/rest/profs")
+    public ResponseEntity<List<Profession>> getProfessions() {
+        return new ResponseEntity<>(professionDao.selectAllProfessions(), HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/rest/prof/edit")
+    public ResponseEntity<Profession> getProfessionById(@RequestParam("id") int id) {
+        return new ResponseEntity<>(professionDao.selectProfessionById(id), HttpStatus.OK);
+    }
+
+    @PutMapping("/rest/prof/update")
+    @ResponseBody
+    public ResponseEntity<Profession> updateProfession(@RequestBody Profession profession) {
+        professionDao.updateProfession(profession);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @PostMapping("/rest/prof/insert")
+    @ResponseBody
+    public ResponseEntity<Profession> insertProfession(@RequestBody Profession profession) {
+        professionDao.insertProfession(profession);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @DeleteMapping(value = "/rest/prof/delete")
+    public ResponseEntity<Profession> deleteProfession(@RequestParam("id") int id) {
+        professionDao.deleteProfession(id);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
 }

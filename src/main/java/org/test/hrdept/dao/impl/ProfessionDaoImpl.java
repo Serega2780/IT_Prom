@@ -5,15 +5,15 @@ import org.hibernate.SessionFactory;
 import org.hibernate.query.Query;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
-import org.test.hrdept.dao.DepartmentDao;
-import org.test.hrdept.domain.Department;
+import org.test.hrdept.dao.ProfessionDao;
+import org.test.hrdept.domain.Profession;
 
 import javax.annotation.Resource;
 import java.util.List;
 
 @Transactional
-@Repository("departmentDao")
-public class DepartmentDaoImpl implements DepartmentDao {
+@Repository("professionDao")
+public class ProfessionDaoImpl implements ProfessionDao {
 
     private SessionFactory sessionFactory;
     private Session session;
@@ -25,49 +25,49 @@ public class DepartmentDaoImpl implements DepartmentDao {
     }
 
     @Override
-    public void insertDepartment(Department department) {
+    public void insertProfession(Profession Profession) {
         session = sessionFactory.getCurrentSession();
-        session.persist(department);
+        session.persist(Profession);
         session.flush();
     }
 
     @Override
     @Transactional(readOnly = true)
-    public Department selectDepartmentById(int id) {
+    public Profession selectProfessionById(int id) {
         session = sessionFactory.getCurrentSession();
-        Query<Department> query = session.createQuery("from Department where id = :id");
+        Query<Profession> query = session.createQuery("from Profession where id = :id");
         query.setParameter("id", id);
         return query.getSingleResult();
     }
 
     @Override
     @Transactional(readOnly = true)
-    public List<Department> selectAllDepartments() {
+    public List<Profession> selectAllProfessions() {
         session = sessionFactory.getCurrentSession();
-        return session.createQuery("FROM Department").list();
+        return session.createQuery("FROM Profession").list();
     }
 
     @Override
     @Transactional(readOnly = true)
-    public Department selectDepartmentByName(String name) {
+    public Profession selectProfessionByName(String name) {
         session = sessionFactory.getCurrentSession();
-        Query<Department> query = session.createQuery("from Department where name = :name");
+        Query<Profession> query = session.createQuery("from Profession where name = :name");
         query.setParameter("name", name);
         return query.getSingleResult();
     }
 
     @Override
-    public boolean deleteDepartment(int id) {
+    public boolean deleteProfession(int id) {
         session = sessionFactory.getCurrentSession();
-        Query query = session.createQuery("DELETE FROM Department WHERE id = :id");
+        Query query = session.createQuery("DELETE FROM Profession WHERE id = :id");
         query.setParameter("id", id);
         return query.executeUpdate() > 0;
     }
 
     @Override
-    public void updateDepartment(Department department) {
+    public void updateProfession(Profession Profession) {
         session = sessionFactory.getCurrentSession();
-        session.update(department);
+        session.update(Profession);
         session.flush();
     }
 }

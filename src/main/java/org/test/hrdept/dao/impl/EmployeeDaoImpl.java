@@ -5,15 +5,15 @@ import org.hibernate.SessionFactory;
 import org.hibernate.query.Query;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
-import org.test.hrdept.dao.DepartmentDao;
-import org.test.hrdept.domain.Department;
+import org.test.hrdept.dao.EmployeeDao;
+import org.test.hrdept.domain.Employee;
 
 import javax.annotation.Resource;
 import java.util.List;
 
 @Transactional
-@Repository("departmentDao")
-public class DepartmentDaoImpl implements DepartmentDao {
+@Repository("employeeDao")
+public class EmployeeDaoImpl implements EmployeeDao {
 
     private SessionFactory sessionFactory;
     private Session session;
@@ -25,49 +25,49 @@ public class DepartmentDaoImpl implements DepartmentDao {
     }
 
     @Override
-    public void insertDepartment(Department department) {
+    public void insertEmployee(Employee Employee) {
         session = sessionFactory.getCurrentSession();
-        session.persist(department);
+        session.persist(Employee);
         session.flush();
     }
 
     @Override
     @Transactional(readOnly = true)
-    public Department selectDepartmentById(int id) {
+    public Employee selectEmployeeById(int id) {
         session = sessionFactory.getCurrentSession();
-        Query<Department> query = session.createQuery("from Department where id = :id");
+        Query<Employee> query = session.createQuery("from Employee where id = :id");
         query.setParameter("id", id);
         return query.getSingleResult();
     }
 
     @Override
     @Transactional(readOnly = true)
-    public List<Department> selectAllDepartments() {
+    public List<Employee> selectAllEmployees() {
         session = sessionFactory.getCurrentSession();
-        return session.createQuery("FROM Department").list();
+        return session.createQuery("FROM Employee").list();
     }
 
     @Override
     @Transactional(readOnly = true)
-    public Department selectDepartmentByName(String name) {
+    public Employee selectEmployeeByName(String name) {
         session = sessionFactory.getCurrentSession();
-        Query<Department> query = session.createQuery("from Department where name = :name");
+        Query<Employee> query = session.createQuery("from Employee where name = :name");
         query.setParameter("name", name);
         return query.getSingleResult();
     }
 
     @Override
-    public boolean deleteDepartment(int id) {
+    public boolean deleteEmployee(int id) {
         session = sessionFactory.getCurrentSession();
-        Query query = session.createQuery("DELETE FROM Department WHERE id = :id");
+        Query query = session.createQuery("DELETE FROM Employee WHERE id = :id");
         query.setParameter("id", id);
         return query.executeUpdate() > 0;
     }
 
     @Override
-    public void updateDepartment(Department department) {
+    public void updateEmployee(Employee Employee) {
         session = sessionFactory.getCurrentSession();
-        session.update(department);
+        session.update(Employee);
         session.flush();
     }
 }
