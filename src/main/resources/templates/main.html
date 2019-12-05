@@ -1,0 +1,282 @@
+<!doctype html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+
+    <title>Dashboard Template · Bootstrap</title>
+    <!-- Bootstrap core CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+
+
+</head>
+<body>
+
+
+<div class="container-fluid">
+    <div class="row">
+
+        <div class="col-sm-2">
+            <div class="flex-sm-column">
+                <ul class="nav flex-column" nav-justified>
+                    <li class="active"><a data-toggle="pill" href="#adminpanel">Click me...</a></li>
+
+                </ul>
+            </div>
+        </div>
+
+        <div class="col-sm-8">
+            <div class="tab-content">
+                <div id="adminpanel" class="tab-pane fade in active">
+                    <h4> Manage entities</h4>
+                    <ul class="nav nav-tabs">
+                        <li class="active"><a data-toggle="tab" href="#emp">Employees</a></li>
+                        &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
+                        <li><a data-toggle="tab" href="#prof">Professions</a></li>
+                        &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
+                        <li><a data-toggle="tab" href="#dept">Departmens</a></li>
+                    </ul>
+                    <div class="tab-content">
+                        <div id="emp" class="tab-pane fade in active">
+                            <div class="container">
+                                <h1>All employees</h1>
+
+                                <table class="table table-striped">
+                                    <tr>
+                                        <th>Id</th>
+                                        <th>Name</th>
+                                        <th>Profession</th>
+                                        <th>Department</th>
+                                        <th>Description</th>
+                                        <th>Edit</th>
+                                        <th>Delete</th>
+                                    </tr>
+
+                                    <tr th:each="empe : ${empList}">
+                                        <td th:text="${emp.id}"></td>
+
+                                        <td>
+										<span th:each="role : ${dept.getGrantedAuthorities()}">
+											<span th:text="${role.getRole()}">
+
+											</span>
+										</span>
+
+                                        </td>
+                                        <td th:text="${dept.name}"></td>
+                                        <td th:text="${dept.password}"></td>
+                                        <td th:text="${dept.email}"></td>
+                                        <td th:text="${dept.country}"></td>
+                                        <td>
+                                            <a th:href="@{'edit?id=' + ${dept.id}}" class="btn btn-info"
+                                               data-toggle="modal" data-target="#myModal"
+                                               th:attrappend="data-target=${dept.id}"
+                                               role="button">Edit</a>
+
+                                            <form class="form-horizontal" action="#" th:action="@{insert}"
+                                                  method="post">
+                                                <fieldset>
+                                                    <!-- Modal -->
+                                                    <div class="modal fade" id="myModal" role="dialog"
+                                                         th:attrappend="id=${dept.id}">
+                                                        <div class="modal-dialog modal-lg">
+                                                            <div class="modal-content">
+                                                                <div class="modal-header">
+                                                                    <button type="button" class="close"
+                                                                            data-dismiss="modal">×
+                                                                    </button>
+                                                                    <h4 class="modal-title">Modal Header</h4>
+                                                                </div>
+                                                                <div class="modal-body">
+                                                                    <p>This is a large modal.</p>
+                                                                    <table class="table table-striped">
+                                                                        <tr>
+                                                                            <th>Id:</th>
+                                                                            <td><input type="text" readonly name="id"
+                                                                                       th:value="${dept.id}"/></td>
+                                                                        </tr>
+
+                                                                        <tr>
+                                                                            <th>Name:</th>
+                                                                            <td><input type="text" name="name"
+                                                                                       th:value="${dept.name}"/></td>
+                                                                        </tr>
+
+                                                                        <tr>
+                                                                            <th>Password:</th>
+                                                                            <td><input type="password"
+                                                                                       name="password"
+                                                                                       th:value="${dept.password}"/>
+                                                                            </td>
+                                                                        </tr>
+
+                                                                        <tr>
+                                                                            <th>Email:</th>
+                                                                            <td><input type="text" name="email"
+                                                                                       th:value="${dept.email}"/></td>
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <th>Country:</th>
+                                                                            <td>
+                                                                                <select id="countriesList"
+                                                                                        name="country"
+                                                                                        th:value="${dept.country}">
+                                                                                    <option value=""> --</option>
+                                                                                    <option th:each="country : ${countriesList}"
+                                                                                            th:value="${country}"
+                                                                                            th:utext="${country}"/>
+                                                                                </select>
+                                                                            </td>
+                                                                        </tr>
+
+                                                                        <tr>
+                                                                            <th>Roles:</th>
+                                                                            <td>
+                                                                                <select id="roles" name="roles"
+                                                                                        multiple="multiple">
+                                                                                    <option th:each="authority : ${dept.getGrantedAuthorities()}"
+                                                                                            th:value="${authority.getAuthority()}"
+                                                                                            selected="selected"
+                                                                                            style="font-weight: bold;"
+                                                                                            th:utext="${authority.getAuthority()}"/>
+                                                                                    <option value=""> --</option>
+                                                                                    <option th:each="role : ${roles}"
+                                                                                            th:value="${role.getAuthority()}"
+                                                                                            th:utext="${role.getAuthority()}"/>
+
+                                                                                </select>
+                                                                            </td>
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <td colspan="2" align="center">
+                                                                                <button type="submit">Save</button>
+                                                                            </td>
+                                                                        </tr>
+                                                                    </table>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                </fieldset>
+                                            </form>
+                                        </td>
+                                        <td>
+                                            <a th:href="@{'delete?id=' + ${dept.id}}" class="btn btn-info"
+                                               role="button">Delete</a>
+
+                                        </td>
+                                    </tr>
+                                </table>
+
+                            </div>
+                        </div>
+
+                        <div id="prof" class="tab-pane fade">
+
+                        </div>
+
+                        <div id="dept" class="tab-pane fade in active">
+                            <div class="container">
+                                <h1>All departments</h1>
+
+                                <table class="table table-striped">
+                                    <tr>
+                                        <th>Id</th>
+                                        <th>Name</th>
+                                        <th>Parent dept.</th>
+                                        <th>Description</th>
+                                        <th>Edit</th>
+                                        <th>Delete</th>
+                                    </tr>
+
+                                    <tr th:each="dept:${deptList}">
+                                        <td th:text="${dept.id}"></td>
+                                        <td th:text="${dept.name}"></td>
+                                        <td th:text="${dept.getDepartment() != null} ? ${dept.getDepartment().name} : 'null value!'">someValue</td>
+                                        <td th:text="${dept.description}"></td>
+                                        <td>
+                                            <a th:href="@{'edit?id=' + ${dept.id}}" class="btn btn-info"
+                                               data-toggle="modal" data-target="#myModal"
+                                               th:attrappend="data-target=${dept.id}"
+                                               role="button">Edit</a>
+
+                                            <form class="form-horizontal" action="#" th:action="@{insert}"
+                                                  method="post">
+                                                <fieldset>
+                                                    <!-- Modal -->
+                                                    <div class="modal fade" id="myModal" role="dialog"
+                                                         th:attrappend="id=${dept.id}">
+                                                        <div class="modal-dialog modal-lg">
+                                                            <div class="modal-content">
+                                                                <div class="modal-header">
+                                                                    <button type="button" class="close"
+                                                                            data-dismiss="modal">×
+                                                                    </button>
+                                                                    <h4 class="modal-title">Modal Header</h4>
+                                                                </div>
+                                                                <div class="modal-body">
+                                                                    <p>This is a large modal.</p>
+                                                                    <table class="table table-striped">
+                                                                        <tr>
+                                                                            <th>Id:</th>
+                                                                            <td><input type="text" readonly name="id"
+                                                                                       th:value="${dept.id}"/></td>
+                                                                        </tr>
+
+                                                                        <tr>
+                                                                            <th>Name:</th>
+                                                                            <td><input type="text" name="name"
+                                                                                       th:value="${dept.name}"/></td>
+                                                                        </tr>
+
+                                                                        <tr>
+                                                                            <th>Password:</th>
+                                                                            <td><input type="password"
+                                                                                       name="password"
+                                                                                       th:value="${dept.description}"/>
+                                                                            </td>
+                                                                        </tr>
+
+                                                                        <tr>
+                                                                            <td colspan="2" align="center">
+                                                                                <button type="submit">Save</button>
+                                                                            </td>
+                                                                        </tr>
+                                                                    </table>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                </fieldset>
+                                            </form>
+                                        </td>
+                                        <td>
+                                            <a th:href="@{'delete?id=' + ${dept.id}}" class="btn btn-info"
+                                               role="button">Delete</a>
+
+                                        </td>
+                                    </tr>
+                                </table>
+
+                            </div>
+                        </div>
+
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+</div>
+
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+</body>
+</html>
