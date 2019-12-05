@@ -27,8 +27,19 @@ public class HrDeptController {
     @RequestMapping(value = {"/deps"}, method = RequestMethod.GET)
     public ModelAndView listDept() {
         ModelAndView modelView = new ModelAndView("main.html");
+
+        Department department = new Department("myDept", "myDeptDesc");
+        Department department2 = departmentDao.selectDepartmentByName("IT");
+        department.setDepartment(department2);
+        departmentDao.insertDepartment(department);
+
+        departmentDao.
+
         List<Department> deptList = departmentDao.selectAllDepartments();
         modelView.addObject("deptList", deptList);
+
+
+
         return modelView;
     }
 
