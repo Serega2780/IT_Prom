@@ -21,12 +21,12 @@ public class Employee {
 
     @ManyToOne(cascade = CascadeType.REFRESH)
     @JoinColumn(name = "profession_id")
-    private Profession profession;
+    private Profession profession = null;
 
 
     @ManyToOne(cascade = CascadeType.REFRESH)
     @JoinColumn(name = "department_id")
-    private Department department;
+    private Department department = null;
 
     public Employee() {
     }
@@ -50,6 +50,14 @@ public class Employee {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public Profession getProfession() {
+        return profession;
+    }
+
+    public Department getDepartment() {
+        return department;
     }
 
     public String getDescription() {

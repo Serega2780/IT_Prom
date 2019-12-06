@@ -5,7 +5,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.test.hrdept.dao.DepartmentDao;
 import org.test.hrdept.domain.Department;
-import org.test.hrdept.domain.Profession;
 
 import javax.annotation.Resource;
 import java.util.List;
@@ -23,18 +22,13 @@ public class DepartmentRestController {
 
     @RequestMapping(value = "/depts")
     public ResponseEntity<List<Department>> getDepartments() {
-//        Department department = new Department("myDept", "myDeptDesc");
-//        Department department2 = departmentDao.selectDepartmentByName("IT");
-//        department.setDepartment(department2);
-//        departmentDao.insertDepartment(department);
-//
-//            List<Department> department3 = departmentDao.selectAllDepartments();
         return new ResponseEntity<>(departmentDao.selectAllDepartments(), HttpStatus.OK);
     }
 
     @RequestMapping(value = "/dept")
     public ResponseEntity<Department> getDepartmentByName(@RequestParam("name") String name) {
-        return new ResponseEntity<>(departmentDao.selectDepartmentByName(name), HttpStatus.OK);
+        Department department = departmentDao.selectDepartmentByName(name);
+        return new ResponseEntity<>(department, HttpStatus.OK);
     }
 
     @RequestMapping(value = "/edit")

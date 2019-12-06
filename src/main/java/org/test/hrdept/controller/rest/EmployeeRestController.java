@@ -20,7 +20,7 @@ public class EmployeeRestController {
         this.employeeDao = employeeDao;
     }
 
-    @RequestMapping(value = "/profs")
+    @RequestMapping(value = "/emps")
     public ResponseEntity<List<Employee>> getEmployees() {
         return new ResponseEntity<>(employeeDao.selectAllEmployees(), HttpStatus.OK);
     }

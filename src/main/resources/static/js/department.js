@@ -9,6 +9,9 @@ $(document).ready(function () {
             $('#myModal').find('.modal-title').text('Edit department');
             document.getElementById('modalPost').style.visibility = "hidden";
             document.getElementById('modalPut').style.visibility = "visible";
+            document.getElementById('parDep').style.display = '';
+            document.getElementById('pro').style.display = 'none';
+            document.getElementById('dep').style.display = 'none';
 
             $('#deptParList')
                 .find('option')
@@ -115,30 +118,42 @@ $(document).ready(function () {
             var name = $('input[name=name]').val();
             var description = $('input[name=description]').val();
             var parentDept = $('#deptParList option:selected').val();
+            var ent;
 
-            $.ajax({
-                dataType: "json",
-                type: 'GET',
-                url: "/rest/dept/dept" + '?' + $.param({"name": parentDept}),
-
-            }).done(function (data) {
-              //  parentDept = data;
-              //  alert(parentDept)
+            if (parentDept.length == 0) {
                 //Preparing a JSON object
-                var ent = {
+                ent = {
                     "id": id,
                     "name": name,
-                    "parentDept": data,
+                    "parentDept": null,
                     "description": description
                 };
-
                 postPut("department", "POST", "/rest/dept/insert", ent);
-            });
+                $('#myModal').modal('hide');
+                departmentsList();
 
+            } else {
 
+                $.ajax({
+                    dataType: "json",
+                    type: 'GET',
+                    url: "/rest/dept/dept" + '?' + $.param({"name": parentDept})
 
-            $('#myModal').modal('hide');
-            departmentsList();
+                }).done(function (data) {
+
+                    //Preparing a JSON object
+                    ent = {
+                        "id": id,
+                        "name": name,
+                        "parentDept": data,
+                        "description": description
+                    };
+                    postPut("department", "POST", "/rest/dept/insert", ent);
+                    $('#myModal').modal('hide');
+                    departmentsList();
+                });
+            }
+
         })
 
         $('#modalPut').click(function () {
@@ -146,20 +161,43 @@ $(document).ready(function () {
             var name = $('input[name=name]').val();
             var description = $('input[name=description]').val();
             var parentDept = $('#deptParList option:selected').val();
+            var ent;
 
-            //Preparing a JSON object
-            var ent = {
-                "id": id,
-                "name": name,
-                "parentDept": parentDept,
-                "description": description
-            };
-            global.postPut("department", "PUT", "/rest/dept/update");
+            if (parentDept.length == 0) {
+                //Preparing a JSON object
+                ent = {
+                    "id": id,
+                    "name": name,
+                    "parentDept": null,
+                    "description": description
+                };
+                postPut("department", "PUT", "/rest/dept/update", ent);
+                $('#myModal').modal('hide');
+                departmentsList();
 
-            $('#myModal').modal('hide');
-            departmentsList();
+            } else {
+                $.ajax({
+                    dataType: "json",
+                    type: 'GET',
+                    url: "/rest/dept/dept" + '?' + $.param({"name": parentDept})
+
+                }).done(function (data) {
+
+                    //Preparing a JSON object
+                    ent = {
+                        "id": id,
+                        "name": name,
+                        "parentDept": data,
+                        "description": description
+                    };
+
+                    postPut("department", "PUT", "/rest/dept/update", ent);
+                    $('#myModal').modal('hide');
+                    departmentsList();
+                })
+            }
+            ;
         })
-
 
         //press Delete button (open Modal window)
         $('#deptBody').on('click', '.item-delete', function () {

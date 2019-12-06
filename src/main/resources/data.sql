@@ -11,7 +11,7 @@ CREATE TABLE employee (
 INSERT INTO employee (name, description) VALUES
   ('ivanov', 'sys.admin.'),
   ('petrov', 'chief economist'),
-  ('sidirov', 'chief engineer');
+  ('sidorov', 'chief engineer');
 
 
 DROP TABLE IF EXISTS profession;

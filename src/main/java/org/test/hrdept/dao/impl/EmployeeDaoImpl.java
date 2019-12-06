@@ -9,11 +9,15 @@ import org.test.hrdept.dao.EmployeeDao;
 import org.test.hrdept.domain.Employee;
 
 import javax.annotation.Resource;
+import javax.persistence.NoResultException;
 import java.util.List;
+import java.util.logging.Logger;
 
 @Transactional
 @Repository("employeeDao")
 public class EmployeeDaoImpl implements EmployeeDao {
+
+    Logger logger = Logger.getLogger("EmployeeDaoImpl");
 
     private SessionFactory sessionFactory;
     private Session session;
@@ -37,14 +41,26 @@ public class EmployeeDaoImpl implements EmployeeDao {
         session = sessionFactory.getCurrentSession();
         Query<Employee> query = session.createQuery("from Employee where id = :id");
         query.setParameter("id", id);
-        return query.getSingleResult();
+        Employee employee = null;
+        try {
+            employee = query.getSingleResult();
+        } catch (NoResultException e) {
+            logger.severe("A NoResultException during select Employee by id !!! ");
+        }
+        return employee;
     }
 
     @Override
     @Transactional(readOnly = true)
     public List<Employee> selectAllEmployees() {
         session = sessionFactory.getCurrentSession();
-        return session.createQuery("FROM Employee").list();
+        List<Employee> employeeList = null;
+        try {
+            employeeList = session.createQuery("FROM Employee").list();
+        } catch (NoResultException e) {
+            logger.severe("A NoResultException during select all Employees !!! ");
+        }
+        return employeeList;
     }
 
     @Override
@@ -53,7 +69,13 @@ public class EmployeeDaoImpl implements EmployeeDao {
         session = sessionFactory.getCurrentSession();
         Query<Employee> query = session.createQuery("from Employee where name = :name");
         query.setParameter("name", name);
-        return query.getSingleResult();
+        Employee employee = null;
+        try {
+            employee = query.getSingleResult();
+        } catch (NoResultException e) {
+            logger.severe("A NoResultException during select Employee by name !!! ");
+        }
+        return employee;
     }
 
     @Override

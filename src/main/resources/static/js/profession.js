@@ -9,6 +9,9 @@ $(document).ready(function () {
         $('#myModal').find('.modal-title').text('Edit profession');
         document.getElementById('modalPost').style.visibility = "hidden";
         document.getElementById('modalPut').style.visibility = "visible";
+        document.getElementById('parDep').style.display = 'none';
+        document.getElementById('pro').style.display = 'none';
+        document.getElementById('dep').style.display = 'none';
 
         $.ajax({
             type: 'ajax',
@@ -69,7 +72,10 @@ $(document).ready(function () {
         $('#myModal').find('.modal-title').text('Add profession');
         document.getElementById('modalPut').style.visibility = "hidden";
         document.getElementById('modalPost').style.visibility = "visible";
-
+        document.getElementById('parDep').style.display = 'none';
+        document.getElementById('pro').style.display = 'none';
+        document.getElementById('dep').style.display = 'none';
+        
     })
 
     $('#modalPost').click(function () {

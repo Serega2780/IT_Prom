@@ -9,11 +9,15 @@ import org.test.hrdept.dao.ProfessionDao;
 import org.test.hrdept.domain.Profession;
 
 import javax.annotation.Resource;
+import javax.persistence.NoResultException;
 import java.util.List;
+import java.util.logging.Logger;
 
 @Transactional
 @Repository("professionDao")
 public class ProfessionDaoImpl implements ProfessionDao {
+
+    Logger logger = Logger.getLogger("ProfessionDaoImpl");
 
     private SessionFactory sessionFactory;
     private Session session;
@@ -37,14 +41,26 @@ public class ProfessionDaoImpl implements ProfessionDao {
         session = sessionFactory.getCurrentSession();
         Query<Profession> query = session.createQuery("from Profession where id = :id");
         query.setParameter("id", id);
-        return query.getSingleResult();
+        Profession profession = null;
+        try {
+            profession = query.getSingleResult();
+        } catch (NoResultException e) {
+            logger.severe("A NoResultException during select Profession by id !!! ");
+        }
+        return profession;
     }
 
     @Override
     @Transactional(readOnly = true)
     public List<Profession> selectAllProfessions() {
         session = sessionFactory.getCurrentSession();
-        return session.createQuery("FROM Profession").list();
+        List<Profession> professionList = null;
+        try {
+            professionList = session.createQuery("FROM Profession").list();
+        } catch (NoResultException e) {
+            logger.severe("A NoResultException during select all Professions !!! ");
+        }
+        return professionList;
     }
 
     @Override
@@ -53,7 +69,13 @@ public class ProfessionDaoImpl implements ProfessionDao {
         session = sessionFactory.getCurrentSession();
         Query<Profession> query = session.createQuery("from Profession where name = :name");
         query.setParameter("name", name);
-        return query.getSingleResult();
+        Profession profession = null;
+        try {
+            profession = query.getSingleResult();
+        } catch (NoResultException e) {
+            logger.severe("A NoResultException during select Profession by name !!! ");
+        }
+        return profession;
     }
 
     @Override
