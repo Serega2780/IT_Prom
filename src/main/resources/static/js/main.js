@@ -254,150 +254,49 @@ $(document).ready(function () {
     }
 
 
-    $('#profBody').on('click', '.item-edit', function () {
-        var id = $(this).attr('data');
-        $('input[name=id]').val("");
-        $('input[name=name]').val("");
-        $('input[name=description]').val("");
-        $('#myModal').modal('show');
-        $('#myModal').find('.modal-title').text('Edit profession');
-        document.getElementById('modalPost').style.visibility="hidden";
-        document.getElementById('modalPut').style.visibility="visible";
-
-        $.ajax({
-            type: 'ajax',
-            method: 'GET',
-            url: "/rest/prof/edit",
-            data: {id: id},
-            async: false,
-            dataType: 'json',
-            success: function (data) {
-                $('input[name=id]').val(data.id);
-                $('input[name=name]').val(data.name);
-                $('input[name=description]').val(data.description);
-            },
-            error: function () {
-            }
-        });
-
-    });
-
-    $('#Professions').on('shown.bs.tab', function (e) {
-        //alert("Professions!!!");
-        professionsList();
-    });
-
-    function professionsList() {
-        $('#profBody').empty();
-
-        $.ajax({
-            dataType: "json",
-            type: 'GET',
-            url: "/rest/profs",
-
-        }).done(function (data) {
-            $.each(data, function (i, item) {
-
-                var hrefEdit = "<a href=\"#\" class=\"btn btn-info item-edit\" data=\"" +
-                    +item.id + "\" data-toggle=\"modal\" data-target=\"#myModal\" role=\"button\" >Edit</a>";
-
-                var hrefDelete = "<a href=\"#\" class=\"btn btn-info item-delete\" data=\"" +
-                    +item.id + "\" role=\"button\">Delete</a>";
-
-                $('#profBody').append("<tr>")
-                    .append("<td>" + item.id + "</td>")
-                    .append("<td>" + item.name + "</td>")
-                    .append("<td>" + item.description + "</td>")
-                    .append("<td>" + hrefEdit + "</td>")
-                    .append("<td>" + hrefDelete + "</td>")
-                    .append("</tr>");
-            })
-        });
-    }
-
-
-    $('#profAdd').click(function () {
-        $('input[name=id]').val("");
-        $('input[name=name]').val("");
-        $('input[name=description]').val("");
-        $('#myModal').find('.modal-title').text('Add profession');
-        document.getElementById('modalPut').style.visibility="hidden";
-        document.getElementById('modalPost').style.visibility="visible";
-
-    })
     $('#empAdd').click(function () {
         $('input[name=id]').val("");
         $('input[name=name]').val("");
         $('input[name=description]').val("");
         $('#myModal').find('.modal-title').text('Add employee');
-        document.getElementById('modalPut').style.visibility="hidden";
-        document.getElementById('modalPost').style.visibility="visible";
+        document.getElementById('modalPut').style.visibility = "hidden";
+        document.getElementById('modalPost').style.visibility = "visible";
     })
     $('#depAdd').click(function () {
         $('input[name=id]').val("");
         $('input[name=name]').val("");
         $('input[name=description]').val("");
         $('#myModal').find('.modal-title').text('Add department');
-        document.getElementById('modalPut').style.visibility="hidden";
-        document.getElementById('modalPost').style.visibility="visible";
-    })
-
-
-    $('#modalPost').click(function () {
-
-
-        var id = $('input[name=id]').val();
-        var name = $('input[name=name]').val();
-        var description = $('input[name=description]').val();
-
-        //Preparing a JSON object
-        var headHead = {
-            "id": id,
-            "name": name,
-            "description": description
-
-        };
-
-        var p="profession"
-        if(document.querySelector('.modal-title').textContent.indexOf(p) !== -1) {
-
-            var prof = JSON.stringify(headHead);
-
-            $.ajax({
-                method: 'POST',
-                url: "/rest/prof/insert",
-                dataType: 'json',
-                contentType: 'application/json',
-                async: false,
-                data: prof,
-            }).done(function (roles) {
-
-            }).fail(function () {
-
-            }).always(function () {
-                $('#myModal').modal('hide');
-                professionsList();
-             //   location.reload();
-            })
-        }
-    })
-
-
-    //press Delete button (open Modal window)
-    $('#profBody').on('click', '.item-delete', function () {
-        var id = $(this).attr('data');
-        console.error(id);
-        $.ajax({
-            type: 'ajax',
-            method: 'DELETE',
-            url: "/rest/prof/delete" + '?' + $.param({"id": id}),
-            async: false,
-
-        });
-        professionsList();
-        $('#myModal').modal('hide');
-      //  location.reload();
+        document.getElementById('modalPut').style.visibility = "hidden";
+        document.getElementById('modalPost').style.visibility = "visible";
     })
 
 
 })
+
+////////////////////////////////////////////////////////////////////
+
+global = {
+
+    postPut: function (entity, method, url, ent) {
+        return postPut(entity, method, url, ent);
+    }
+};
+
+function postPut(entity, method, url, ent) {
+
+    if (document.querySelector('.modal-title').textContent.indexOf(entity) !== -1) {
+        $.ajax({
+            method: method,
+            url: url,
+            dataType: 'json',
+            contentType: 'application/json',
+            async: false,
+            data: JSON.stringify(ent),
+        }).done(function (roles) {
+
+        })
+    }
+}
+
+

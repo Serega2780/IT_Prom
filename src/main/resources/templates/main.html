@@ -11,6 +11,8 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
     <script type="application/javascript" src="/js/main.js"></script>
+    <script type="application/javascript" src="/js/profession.js"></script>
+    <script type="application/javascript" src="/js/department.js"></script>
 
 
 </head>
@@ -108,7 +110,7 @@
                                         <th>Delete</th>
                                     </tr>
                                     </thead>
-                                    <tboby id="deptBody"></tboby>
+                                    <tbody id="deptBody"></tbody>
 
                                 </table>
 
@@ -128,6 +130,7 @@
                                     <div class="modal-body">
 
                                         <table class="table table-striped">
+                                            <tbody id="modalBody">
                                             <tr>
                                                 <th>Id:</th>
                                                 <td><input type="text" readonly name="id" id="id"/></td>
@@ -144,48 +147,46 @@
                                             </tr>
 
 
-                                            <tr>
-                                                <th id="parDep" style="visibility: hidden">Parent dept.:</th>
+                                            <tr id="parDep">
+                                                <th>Parent dept.:</th>
                                                 <td>
                                                     <select id="deptParList"
                                                             name="parentDept"
-                                                            style="visibility:hidden">
-
-
+                                                           >
                                                         <option value=""> --</option>
 
                                                     </select>
                                                 </td>
                                             </tr>
 
-                                            <tr>
-                                                <th id="pro" style="visibility: hidden">Profession:</th>
+                                            <tr id="pro" >
+                                                <th >Profession:</th>
                                                 <td>
                                                     <select id="profList"
                                                             name="prof"
-                                                            style="visibility:hidden">
+                                                            >
 
                                                     </select>
                                                 </td>
                                             </tr>
-                                            <tr>
-                                                <th id="dep" style="visibility: hidden">Department:</th>
+                                            <tr id="dep">
+                                                <th>Department:</th>
                                                 <td>
-                                                    <select id="deptList"
-                                                            name="dept"
-                                                            style="visibility:hidden">
+                                                    <select id="xxx"
+                                                            name="dept">
 
                                                     </select>
                                                 </td>
                                             </tr>
                                             <tr>
                                                 <td colspan="2" align="center">
-                                                    <button id="modalPost" style="visibility: hidden" type="submit">Insert</button>
+                                                    <button id="modalPost"  type="submit">Insert</button>
                                                 </td>
                                                 <td colspan="2" align="center">
-                                                    <button id="modalPut" style="visibility: hidden" type="submit">Update</button>
+                                                    <button id="modalPut"  type="submit">Update</button>
                                                 </td>
                                             </tr>
+                                            </tbody>
                                         </table>
                                     </div>
                                 </div>

@@ -19,7 +19,7 @@ public class Department {
 
     @OneToOne(cascade = CascadeType.REFRESH)
     @JoinColumn(name = "parentDept")
-    private Department parentDept = null;
+    public Department parentDept = null;
 
     public Department() {
     }
