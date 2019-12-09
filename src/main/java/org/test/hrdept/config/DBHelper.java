@@ -18,7 +18,7 @@ import java.util.Properties;
 @Configuration
 public class DBHelper {
 
-    @Bean
+    @Bean(name="dataSource")
     public DataSource dataSource() {
 
         DriverManagerDataSource dataSource = new DriverManagerDataSource();

@@ -1,6 +1,7 @@
 package org.test.hrdept.controller;
 
 
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
@@ -16,7 +17,7 @@ public class HomeController {
 
     @GetMapping
     public ModelAndView home() {
-        ModelAndView modelView = new ModelAndView("main.html");
+        ModelAndView modelView = new ModelAndView("main.html", HttpStatus.OK);
         return modelView;
     }
 

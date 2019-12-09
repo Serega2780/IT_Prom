@@ -26,7 +26,7 @@ public class ProfessionRestController {
     }
 
     @RequestMapping(value = "/prof")
-    public ResponseEntity<Profession> getDepartmentByName(@RequestParam("name") String name) {
+    public ResponseEntity<Profession> getProfessionByName(@RequestParam("name") String name) {
         return new ResponseEntity<>(professionDao.selectProfessionByName(name), HttpStatus.OK);
     }
 
