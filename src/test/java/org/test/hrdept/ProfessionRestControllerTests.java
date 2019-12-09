@@ -1,8 +1,10 @@
 package org.test.hrdept;
 
 
+import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestMethodOrder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
@@ -15,16 +17,12 @@ import org.test.hrdept.domain.Profession;
 
 import java.util.List;
 
-
-import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.Matchers.nullValue;
-
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.hamcrest.core.IsNull.notNullValue;
-
+import static org.junit.jupiter.api.Assertions.*;
 
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class ProfessionRestControllerTests {
 
     @LocalServerPort
@@ -69,7 +67,7 @@ public class ProfessionRestControllerTests {
                                 new ParameterizedTypeReference<List<Profession>>() {
                                 });
 
-        assertThat(response.getStatusCode().equals(HttpStatus.OK));
+        assertEquals(response.getStatusCode(), HttpStatus.OK);
 
         List<Profession> professions = response.getBody();
         assertThat(professions.get(2))
@@ -87,46 +85,43 @@ public class ProfessionRestControllerTests {
         ResponseEntity<Profession> response =
                 restTemplate.postForEntity("http://localhost:" + port + "/rest/prof/insert", profession, Profession.class);
 
-        assertThat(response.getStatusCode().equals(HttpStatus.OK));
+        assertEquals(response.getStatusCode(), HttpStatus.OK);
 
         profession = restTemplate.getForObject("http://localhost:" + port + "/rest/prof/prof/?name=" + prof,
                 Profession.class);
 
-        assertThat(profession!=null);
-        assertThat(profession.getName().equals("newName"));
+        assertNotNull(profession);
+        assertEquals(profession.getName(), "newName");
 
     }
 
     @Test
     @Order(5)
     void updateProfession_test() {
-        final String prof = "newName";
-        final String newProf = "newNewName";
+        final int profId = 1;
+        final String newProf = "newName";
 
-
-        insertProfession_test();
-
-        Profession profession = restTemplate.getForObject("http://localhost:" + port + "/rest/prof/prof/?name=" + prof,
+        Profession profession = restTemplate.getForObject("http://localhost:" + port + "/rest/prof/edit/?id=" + profId,
                 Profession.class);
-        profession.setName("newNewName");
+        profession.setName(newProf);
 
         restTemplate.put("http://localhost:" + port + "/rest/prof/update", profession);
 
-        profession = restTemplate.getForObject("http://localhost:" + port + "/rest/prof/prof/?name=" + newProf,
+        profession = restTemplate.getForObject("http://localhost:" + port + "/rest/prof/edit/?id=" + profId,
                 Profession.class);
-        assertThat(profession!=null);
-        assertThat(profession.getName().equals("newNewName"));
+        assertNotNull(profession);
+        assertEquals(profession.getName(), newProf);
 
     }
 
     @Test
     @Order(6)
     void deleteProfession_test() {
-        updateProfession_test();
+        final int empId = 1;
 
-        restTemplate.delete("http://localhost:" + port + "/rest/prof/delete?id=4");
-        Profession profession = restTemplate.getForObject("http://localhost:" + port + "/rest/prof/edit/?id=4",
+        restTemplate.delete("http://localhost:" + port + "/rest/prof/delete?id=" + empId);
+        Profession profession = restTemplate.getForObject("http://localhost:" + port + "/rest/prof/edit/?id=" + empId,
                 Profession.class);
-        assertThat(profession==null);
+        assertNull(profession);
     }
 }
